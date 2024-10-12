@@ -20,50 +20,22 @@ struct NewActivityView: View {
     
     var body: some View {
         Form {
-            Section {
+            Section("Choose Activity Name") {
                 TextField("Activity Name", text: $activityName)
             }
 
-            Section {
+            Section("Choose Activity Time") {
                 DatePicker("Activity Start Time", selection: $activityStartTime, displayedComponents: .hourAndMinute)
                 DatePicker("Activity End Time", selection: $activityEndTime, displayedComponents: .hourAndMinute)
             }
             
-            Section(header: Text("Select Days")) {
-                List {
-                    ForEach(weekdays, id: \.self) { day in
-                        MultipleSelectionRow(day: day, isSelected: activityDays.contains(day)) {
-                            if activityDays.contains(day) {
-                                activityDays.removeAll { $0 == day }
-                            } else {
-                                activityDays.append(day)
-                            }
-                        }
-                    }
-                }
+            Section("Choose Activity Days") {
+                WeekdaysView()
             }
-            
-            Section {
+                
+            Section("Choose Activity Date") {
                 DatePicker("Activity Start Date", selection: $activityStartTime, displayedComponents: .date)
                 DatePicker("Activity End Date", selection: $activityEndTime, displayedComponents: .date)
-            }
-        }
-    }
-}
-
-struct MultipleSelectionRow: View {
-    var day: String
-    var isSelected: Bool
-    var action: () -> Void
-    
-    var body: some View {
-        Button(action: action) {
-            HStack {
-                Text(day)
-                Spacer()
-                if isSelected {
-                    Image(systemName: "checkmark")
-                }
             }
         }
     }
